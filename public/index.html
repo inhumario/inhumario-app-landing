@@ -300,10 +300,48 @@
 <section id="contacto" class="cta-final dark">
   <div class="wrap">
     <div class="eyebrow reveal">Empezamos por aquí</div>
-    <h2 class="reveal">Tres pasos.<br>Y tu app está en marcha.</h2>
-    <p class="lead reveal">Escríbeme un email contándome qué tienda tienes y qué quieres conseguir. En 48 horas tengo propuesta cerrada y, si te encaja, en 3-4 semanas tu app está publicada.</p>
-    <a class="email-box reveal" href="mailto:cuadrado.mario@aromasdete.com?subject=App%20m%C3%B3vil%20para%20mi%20tienda">cuadrado.mario@aromasdete.com</a>
-    <p class="small reveal">Mario Cuadrado  ·  Sonseca, Toledo  ·  Respuesta en 24 horas</p>
+    <h2 class="reveal">Cuéntame tu tienda.<br>Te respondo en 24 horas.</h2>
+    <p class="lead reveal">Rellena el formulario y te llamo o te escribo para una primera conversación. En 48 horas tienes propuesta cerrada y, si te encaja, en 3-4 semanas tu app está publicada.</p>
+
+    <form id="form-contacto" class="form-contacto reveal" novalidate>
+      <div class="form-row">
+        <label>
+          <span>Nombre</span>
+          <input type="text" name="name" autocomplete="name" required maxlength="120" placeholder="Tu nombre">
+        </label>
+        <label>
+          <span>Email</span>
+          <input type="email" name="email" autocomplete="email" required maxlength="200" placeholder="tu@email.com">
+        </label>
+      </div>
+      <div class="form-row">
+        <label>
+          <span>Teléfono</span>
+          <input type="tel" name="phone" autocomplete="tel" required maxlength="30" placeholder="+34 600 000 000">
+        </label>
+        <label>
+          <span>Tu tienda online <em>(opcional)</em></span>
+          <input type="text" name="tienda" maxlength="300" placeholder="mitienda.com">
+        </label>
+      </div>
+      <label class="full">
+        <span>¿Qué quieres conseguir con la app?</span>
+        <textarea name="message" required rows="5" maxlength="4000" placeholder="Cuéntame qué tipo de tienda tienes, cuántos pedidos manejas, qué te preocupa o qué te gustaría que la app hiciera por ti."></textarea>
+      </label>
+      <!-- Honeypot anti-bot (oculto) -->
+      <label class="hp" aria-hidden="true">
+        <input type="text" name="website" tabindex="-1" autocomplete="off">
+      </label>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+          <span class="btn-label">Enviar petición</span>
+          <span class="arr">→</span>
+        </button>
+      </div>
+      <div id="form-status" class="form-status" role="status" aria-live="polite"></div>
+    </form>
+
+    <p class="small reveal">O escríbeme directamente a <a href="mailto:cuadrado.mario@aromasdete.com" style="color:#fff; text-decoration:underline;">cuadrado.mario@aromasdete.com</a><br>Mario Cuadrado  ·  Sonseca, Toledo  ·  Respuesta en 24 horas</p>
   </div>
 </section>
 
@@ -331,6 +369,47 @@
     });
   }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Form submit
+  const form = document.getElementById('form-contacto');
+  const status = document.getElementById('form-status');
+  if (form) {
+    form.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      status.className = 'form-status';
+      status.textContent = '';
+
+      const btn = form.querySelector('button[type="submit"]');
+      const lbl = btn.querySelector('.btn-label');
+      const originalLabel = lbl.textContent;
+      btn.disabled = true;
+      lbl.textContent = 'Enviando…';
+
+      const data = Object.fromEntries(new FormData(form).entries());
+      try {
+        const r = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        const j = await r.json().catch(() => ({}));
+        if (r.ok && j.ok) {
+          status.className = 'form-status ok';
+          status.textContent = 'Mensaje enviado. Te respondo en menos de 24 horas.';
+          form.reset();
+        } else {
+          status.className = 'form-status err';
+          status.textContent = j.error || 'No se pudo enviar. Inténtalo más tarde o escribe a cuadrado.mario@aromasdete.com.';
+        }
+      } catch (err) {
+        status.className = 'form-status err';
+        status.textContent = 'No se pudo conectar. Inténtalo más tarde o escribe a cuadrado.mario@aromasdete.com.';
+      } finally {
+        btn.disabled = false;
+        lbl.textContent = originalLabel;
+      }
+    });
+  }
 </script>
 
 </body>

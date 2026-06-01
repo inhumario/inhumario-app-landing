@@ -396,6 +396,108 @@ p { font-size: 17px; color: var(--ink-soft); }
   margin-top: 30px;
   font-size: 13px;
   color: var(--light);
+  line-height: 1.6;
+}
+
+/* === Formulario === */
+.form-contacto {
+  max-width: 720px;
+  margin: 40px auto 24px;
+  text-align: left;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.form-contacto label { display: block; }
+.form-contacto label.full { margin-bottom: 16px; }
+.form-contacto label > span {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--light);
+  margin-bottom: 6px;
+}
+.form-contacto label > span em {
+  font-style: normal;
+  font-weight: 400;
+  color: #777;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.form-contacto input,
+.form-contacto textarea {
+  width: 100%;
+  font-family: inherit;
+  font-size: 16px;
+  color: #FFFFFF;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 14px 16px;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  border-radius: 0;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.form-contacto input::placeholder,
+.form-contacto textarea::placeholder { color: #777; }
+.form-contacto input:focus,
+.form-contacto textarea:focus {
+  border-color: #FFFFFF;
+  background: rgba(255,255,255,0.08);
+}
+.form-contacto textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.5;
+}
+.form-contacto label.hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.form-actions {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 8px;
+}
+.form-contacto .btn {
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+}
+.form-contacto .btn[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.form-status {
+  margin-top: 16px;
+  font-size: 14px;
+  min-height: 20px;
+  text-align: left;
+}
+.form-status.ok {
+  color: #FFFFFF;
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.08);
+  border-left: 3px solid #FFFFFF;
+}
+.form-status.err {
+  color: #FFD3D3;
+  padding: 14px 16px;
+  background: rgba(255,80,80,0.08);
+  border-left: 3px solid #FF8080;
+}
+@media (max-width: 700px) {
+  .form-row { grid-template-columns: 1fr; gap: 12px; }
+  .form-contacto input, .form-contacto textarea { font-size: 16px; padding: 12px 14px; }
 }
 
 /* === Footer === */
