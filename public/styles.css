@@ -92,7 +92,7 @@ p { font-size: 17px; color: var(--ink-soft); }
   justify-content: space-between;
   padding: 16px 0;
 }
-.nav .logo img { height: 30px; }
+.nav .logo img { height: 56px; }
 .nav-cta {
   display: inline-block;
   background: var(--ink);
@@ -507,7 +507,7 @@ footer {
   padding: 50px 0 40px;
   text-align: center;
 }
-footer img { height: 36px; margin: 0 auto 20px; }
+footer img { height: 80px; margin: 0 auto 20px; }
 footer .divider {
   width: 60px;
   height: 1px;
@@ -551,7 +551,7 @@ footer .tagline {
   .price .amount small { font-size: 22px; }
   .cta-final { padding: 90px 0; }
   .cta-final .email-box { font-size: 17px; padding: 16px 22px; word-break: break-all; }
-  .nav .logo img { height: 24px; }
+  .nav .logo img { height: 40px; }
   .nav-cta { padding: 8px 16px; font-size: 13px; }
 }
 
