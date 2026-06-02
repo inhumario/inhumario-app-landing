@@ -10,7 +10,7 @@
 <meta property="og:type" content="website">
 <title>Apps móviles para tu tienda online · Inhumario</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="styles.css?v=5">
+<link rel="stylesheet" href="styles.css?v=6">
 <link rel="icon" type="image/png" href="assets/logo.png">
 </head>
 <body>
@@ -396,6 +396,28 @@
   </div>
 </section>
 
+<!-- ============ BANNER COOKIES ============ -->
+<div id="cookie-banner" class="cookie-banner" hidden>
+  <p>Usamos cookies de analítica para entender qué leen las visitas en esta landing. Sin perfilado ni publicidad. <a href="#" id="cookie-more">Más info</a>.</p>
+  <div class="cookie-banner-actions">
+    <button type="button" class="cookie-btn" id="cookie-reject">Rechazar</button>
+    <button type="button" class="cookie-btn accept" id="cookie-accept">Aceptar</button>
+  </div>
+</div>
+
+<div id="cookie-modal" class="cookie-modal" hidden>
+  <div class="cookie-modal-inner">
+    <button type="button" class="cookie-modal-close" id="cookie-modal-close" aria-label="Cerrar">×</button>
+    <h3>Cookies en app.inhumario.com</h3>
+    <p>Esta página usa <strong>Google Analytics 4</strong> para medir cuántas visitas tiene, de dónde vienen y qué botones se pulsan. No usamos cookies de publicidad, ni vendemos datos, ni hacemos perfilado de usuarios.</p>
+    <ul>
+      <li><strong>_ga, _ga_*</strong> — Google Analytics. Caducan a los 2 años. Se desactivan si rechazas.</li>
+      <li><strong>inh_cookie_consent</strong> — guarda tu preferencia (aceptar / rechazar) para no volver a preguntar.</li>
+    </ul>
+    <p>Responsable del tratamiento: Mario Cuadrado, Sonseca (Toledo). Puedes retirar tu consentimiento cuando quieras escribiendo a <a href="mailto:cuadrado.mario@aromasdete.com">cuadrado.mario@aromasdete.com</a> o borrando el almacenamiento del navegador.</p>
+  </div>
+</div>
+
 <!-- ============ FOOTER ============ -->
 <footer>
   <div class="wrap">
@@ -407,6 +429,68 @@
 </footer>
 
 <script>
+  // === Google Analytics 4 + consentimiento ===
+  // Pega aquí el Measurement ID de la propiedad GA4 de app.inhumario.com (formato G-XXXXXXXXXX).
+  // Mientras esté vacío, no se carga ningún script de tracking.
+  const GA_ID = '';
+
+  function loadGA() {
+    if (!GA_ID) return;
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){ dataLayer.push(arguments); };
+    gtag('js', new Date());
+    gtag('config', GA_ID, { anonymize_ip: true });
+  }
+
+  function trackEvent(name, params) {
+    if (window.gtag) gtag('event', name, params || {});
+  }
+
+  const CONSENT_KEY = 'inh_cookie_consent';
+  const consent = localStorage.getItem(CONSENT_KEY);
+  const banner = document.getElementById('cookie-banner');
+  const modal = document.getElementById('cookie-modal');
+
+  if (consent === 'accepted') loadGA();
+  if (!consent) banner.hidden = false;
+
+  document.getElementById('cookie-accept').addEventListener('click', () => {
+    localStorage.setItem(CONSENT_KEY, 'accepted');
+    banner.hidden = true;
+    loadGA();
+  });
+  document.getElementById('cookie-reject').addEventListener('click', () => {
+    localStorage.setItem(CONSENT_KEY, 'rejected');
+    banner.hidden = true;
+  });
+  document.getElementById('cookie-more').addEventListener('click', (ev) => {
+    ev.preventDefault();
+    modal.hidden = false;
+  });
+  document.getElementById('cookie-modal-close').addEventListener('click', () => {
+    modal.hidden = true;
+  });
+  modal.addEventListener('click', (ev) => {
+    if (ev.target === modal) modal.hidden = true;
+  });
+
+  // === Tracking de eventos clave ===
+  document.querySelectorAll('.store-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const store = btn.href.includes('apple.com') ? 'app_store' : 'google_play';
+      trackEvent('click_store', { store: store });
+    });
+  });
+  document.querySelectorAll('a[href="#contacto"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      trackEvent('click_cta_contacto', { label: btn.textContent.trim() });
+    });
+  });
+
   // Año dinámico
   document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -447,6 +531,7 @@
         if (r.ok && j.ok) {
           status.className = 'form-status ok';
           status.textContent = 'Mensaje enviado. Te respondo en menos de 24 horas.';
+          trackEvent('form_submit_ok', { form: 'contacto' });
           form.reset();
         } else {
           status.className = 'form-status err';
