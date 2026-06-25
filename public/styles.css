@@ -276,6 +276,34 @@ p { font-size: 17px; color: var(--ink-soft); }
   letter-spacing: -0.2px;
 }
 
+/* === Hero download (botones store en el hero, fondo oscuro) === */
+.hero-download {
+  margin-top: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+.hero-download-cta {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: var(--light);
+}
+.store-btn-light {
+  background: #FFFFFF;
+  color: var(--ink);
+  border-color: #FFFFFF;
+}
+.store-btn-light:hover {
+  background: var(--light);
+  border-color: var(--light);
+}
+.store-btn-light .store-btn-small {
+  color: var(--mute);
+}
+
 /* === Benefits === */
 .benefits-grid {
   display: grid;
