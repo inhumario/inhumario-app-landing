@@ -276,32 +276,51 @@ p { font-size: 17px; color: var(--ink-soft); }
   letter-spacing: -0.2px;
 }
 
-/* === Hero download (botones store en el hero, fondo oscuro) === */
-.hero-download {
-  margin-top: 36px;
+/* === Hero download card (destacada sobre el fondo oscuro del hero) === */
+.hero-download-card {
+  margin-top: 40px;
+  padding: 28px 30px 30px;
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+  max-width: 560px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 16px;
 }
-.hero-download-cta {
+.hero-download-eyebrow {
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 6px;
+  letter-spacing: 4px;
   text-transform: uppercase;
-  color: var(--light);
-}
-.store-btn-light {
-  background: #FFFFFF;
-  color: var(--ink);
-  border-color: #FFFFFF;
-}
-.store-btn-light:hover {
-  background: var(--light);
-  border-color: var(--light);
-}
-.store-btn-light .store-btn-small {
   color: var(--mute);
+  margin-bottom: 10px;
+}
+.hero-download-card .hero-download-title {
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--ink);
+  margin: 0 0 8px 0;
+  letter-spacing: -0.4px;
+}
+.hero-download-sub {
+  font-size: 15px;
+  color: var(--mute);
+  margin: 0 0 22px 0;
+}
+.hero-download-card .case-stores-buttons {
+  width: 100%;
+}
+@media (max-width: 640px) {
+  .hero-download-card {
+    margin-top: 32px;
+    padding: 24px 22px 26px;
+    max-width: 100%;
+    width: 100%;
+  }
+  .hero-download-title { font-size: 22px; }
+  .hero-download-card .store-btn { width: 100%; min-width: 0; }
 }
 
 /* === Benefits === */
